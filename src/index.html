@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schoenberg Tone Row Generator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Schoenberg Tone Row Generator</h1>
+
+    <!-- Dropdown for selecting clef -->
+    <label for="clef-select">Select Clef:</label>
+    <select id="clef-select">
+      <option value="treble">Treble</option>
+      <option value="bass">Bass</option>
+      <option value="alto">Alto</option>
+      <option value="tenor">Tenor</option>
+    </select>
+
+    <!-- Dropdown for selecting time signature -->
+    <label for="time-signature-select">Select Time Signature:</label>
+    <select id="time-signature-select">
+      <option value="4/4">4/4</option>
+      <option value="3/4">3/4</option>
+      <option value="6/8">6/8</option>
+      <option value="12/8">12/8</option>
+    </select>
+
+    <!-- Toggle switch for enabling/disabling accidentals -->
+    <label for="accidentals-toggle">Use flats:</label>
+    <input type="checkbox" id="accidentals-toggle" checked>
+
+    <!-- Button to generate the tone row -->
+    <button id="generate">Generate Tone Row</button>
+
+    <!-- Container for rendering the sheet music -->
+    <div id="sheet-music"></div>
+  </div>
+
+  <script src="path/to/vexflow.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
