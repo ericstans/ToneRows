@@ -1,5 +1,98 @@
+import * as Tone from 'tone';
 import { Accidental, Renderer, Stave, StaveNote, Voice, Formatter } from 'vexflow';
 import './styles.css';
+
+
+// Add event listener for play button to play a C major scale as a demo
+document.addEventListener('DOMContentLoaded', function() {
+  const playBtn = document.getElementById('play-btn');
+  const instrumentSelect = document.getElementById('instrument-select');
+  const bpmInput = document.getElementById('bpm-input');
+  const loopCheckbox = document.getElementById('loop-playback');
+  let loopInterval = null;
+  const stopBtn = document.getElementById('stop-btn');
+
+  function stopLoopPlayback() {
+    if (loopInterval) {
+      clearInterval(loopInterval);
+      loopInterval = null;
+    }
+    // Also stop all currently playing notes
+    if (Tone && Tone.Transport) {
+      Tone.Transport.stop();
+    }
+  }
+
+  if (stopBtn) {
+    stopBtn.addEventListener('click', stopLoopPlayback);
+  }
+
+  if (playBtn) {
+    playBtn.addEventListener('click', async () => {
+      stopLoopPlayback(); // Stop any existing loop before starting new playback
+      await Tone.start(); // Required for browser autoplay policy
+      let synth;
+      const selectedInstrument = instrumentSelect ? instrumentSelect.value : 'Synth';
+      switch (selectedInstrument) {
+        case 'AMSynth':
+          synth = new Tone.AMSynth().toDestination();
+          break;
+        case 'FMSynth':
+          synth = new Tone.FMSynth().toDestination();
+          break;
+        case 'DuoSynth':
+          synth = new Tone.DuoSynth().toDestination();
+          break;
+        case 'MonoSynth':
+          synth = new Tone.MonoSynth().toDestination();
+          break;
+        case 'MembraneSynth':
+          synth = new Tone.MembraneSynth().toDestination();
+          break;
+        case 'MetalSynth':
+          synth = new Tone.MetalSynth().toDestination();
+          break;
+        case 'PluckSynth':
+          synth = new Tone.PluckSynth().toDestination();
+          break;
+        case 'PolySynth':
+          synth = new Tone.PolySynth().toDestination();
+          break;
+        default:
+          synth = new Tone.Synth().toDestination();
+      }
+      // Try to get the current tone row from the last rendering, or generate a new one if not available
+      let toneRow = window.currentToneRow;
+      if (!toneRow) {
+        toneRow = generateToneRow();
+      }
+      // Map the tone row to octave 4 notes for playback (e.g., C4, C#4, D4, ...)
+      const notes = toneRow.map(n => n.replace('b', '♭').replace('#', '#') + '4').map(n => n.replace('♭', 'b'));
+      // Get BPM from input, default to 120 if not set
+      let bpm = 120;
+      if (bpmInput && bpmInput.value) {
+        bpm = parseInt(bpmInput.value, 10) || 120;
+      }
+      const beatDuration = 60 / bpm; // seconds per beat
+
+      // Function to play the sequence
+      const playSequence = () => {
+        let now = Tone.now();
+        notes.forEach((note, i) => {
+          synth.triggerAttackRelease(note, "8n", now + i * beatDuration);
+        });
+      };
+
+      // If loop is checked, set interval, else play once
+      if (loopCheckbox && loopCheckbox.checked) {
+        playSequence();
+        loopInterval = setInterval(playSequence, notes.length * beatDuration * 1000);
+      } else {
+        playSequence();
+      }
+    });
+  }
+});
 
 // Function to generate a random Schoenberg tone row
 function generateToneRow() {
@@ -106,7 +199,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const accidentalToggle = document.getElementById('accidentals-toggle');
 
   button.addEventListener('click', () => {
+    if (typeof stopLoopPlayback === 'function') stopLoopPlayback();
     const toneRow = generateToneRow();
+    window.currentToneRow = toneRow; // Store the current tone row globally for playback
     const clef = clefSelect.value; // Get selected clef (treble or bass)
     const useFlats = accidentalToggle.checked; // Check if flats are preferred
     renderToneRow(toneRow, clef, useFlats);

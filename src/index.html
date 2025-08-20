@@ -32,8 +32,33 @@
     <label for="accidentals-toggle">Use flats:</label>
     <input type="checkbox" id="accidentals-toggle" checked>
 
-    <!-- Button to generate the tone row -->
-    <button id="generate">Generate Tone Row</button>
+
+    <!-- Dropdown for selecting instrument -->
+    <label for="instrument-select">Instrument:</label>
+    <select id="instrument-select">
+      <option value="Synth">Synth</option>
+      <option value="AMSynth">AMSynth</option>
+      <option value="FMSynth">FMSynth</option>
+      <option value="DuoSynth">DuoSynth</option>
+      <option value="MonoSynth">MonoSynth</option>
+      <option value="MembraneSynth">MembraneSynth</option>
+      <option value="MetalSynth">MetalSynth</option>
+      <option value="PluckSynth">PluckSynth</option>
+      <option value="PolySynth">PolySynth</option>
+    </select>
+
+  <!-- Playback speed input -->
+  <label for="bpm-input">Playback Speed (BPM):</label>
+  <input type="number" id="bpm-input" min="30" max="300" value="120" style="width:60px;">
+
+  <!-- Loop playback checkbox -->
+  <label for="loop-playback">Loop playback</label>
+  <input type="checkbox" id="loop-playback">
+
+  <!-- Button to generate the tone row -->
+  <button id="generate">Generate Tone Row</button>
+  <button id="play-btn">Play</button>
+  <button id="stop-btn">Stop</button>
 
     <!-- Container for rendering the sheet music -->
     <div id="sheet-music"></div>
