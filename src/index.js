@@ -70,10 +70,10 @@ function renderToneRow(toneRow, clef, useFlats) {
   div.innerHTML = ''; // Clear previous rendering
 
   const renderer = new Renderer(div, Renderer.Backends.SVG);
-  renderer.resize(800, 200);
+  renderer.resize(900, 200);
 
   const context = renderer.getContext();
-  const stave = new Stave(10, 40, 700);
+  const stave = new Stave(10, 40, 800);
   stave.addClef(clef).addTimeSignature('12/8').setContext(context).draw();
 
   // Map tone row to VexFlow notes
