@@ -167,7 +167,7 @@ function renderToneRow(toneRow, clef, useFlats) {
 
   const context = renderer.getContext();
   const stave = new Stave(10, 40, 800);
-  stave.addClef(clef).addTimeSignature('12/8').setContext(context).draw();
+  stave.addClef(clef).setContext(context).draw();
 
   // Map tone row to VexFlow notes
   const notes = toneRow.map((note) => {
